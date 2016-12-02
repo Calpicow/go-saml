@@ -84,8 +84,14 @@ func (r *AuthnRequest) Validate(publicCertPath string) error {
 func (s *ServiceProviderSettings) GetAuthnRequest() *AuthnRequest {
 	r := NewAuthnRequest()
 	r.AssertionConsumerServiceURL = s.AssertionConsumerServiceURL
+	r.Destination = s.IDPSSOURL
 	r.Issuer.Url = s.IDPSSODescriptorURL
 	r.Signature.KeyInfo.X509Data.X509Certificate.Cert = s.PublicCert()
+
+	if !s.SPSignRequest {
+		r.SAMLSIG = ""
+		r.Signature = nil
+	}
 
 	return r
 }
@@ -125,14 +131,14 @@ func NewAuthnRequest() *AuthnRequest {
 			SAML: "urn:oasis:names:tc:SAML:2.0:assertion",
 		},
 		IssueInstant: time.Now().UTC().Format(time.RFC3339Nano),
-		NameIDPolicy: NameIDPolicy{
+		NameIDPolicy: &NameIDPolicy{
 			XMLName: xml.Name{
 				Local: "samlp:NameIDPolicy",
 			},
 			AllowCreate: true,
 			Format:      "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
 		},
-		RequestedAuthnContext: RequestedAuthnContext{
+		RequestedAuthnContext: &RequestedAuthnContext{
 			XMLName: xml.Name{
 				Local: "samlp:RequestedAuthnContext",
 			},
@@ -146,7 +152,7 @@ func NewAuthnRequest() *AuthnRequest {
 				Transport: "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
 			},
 		},
-		Signature: Signature{
+		Signature: &Signature{
 			XMLName: xml.Name{
 				Local: "samlsig:Signature",
 			},
