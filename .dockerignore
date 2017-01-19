@@ -1,0 +1,10 @@
+# Exclude git from build
+.git/
+
+# Exclude docker related artifacts
+docker*
+Docker*
+
+# Exclude existing vendors except for vendor json
+vendor/
+!vendor/vendor.json

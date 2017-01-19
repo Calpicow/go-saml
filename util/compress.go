@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+//CompressString using compress/flate library
 func CompressString(in string) string {
 	buf := new(bytes.Buffer)
 	compressor, _ := flate.NewWriter(buf, 9)
@@ -15,6 +16,7 @@ func CompressString(in string) string {
 	return buf.String()
 }
 
+//DecompressString using compress/flate library
 func DecompressString(in string) string {
 	buf := new(bytes.Buffer)
 	decompressor := flate.NewReader(strings.NewReader(in))
@@ -23,6 +25,7 @@ func DecompressString(in string) string {
 	return buf.String()
 }
 
+//Compress binary using compress/flate library
 func Compress(in []byte) []byte {
 	buf := new(bytes.Buffer)
 	compressor, _ := flate.NewWriter(buf, 9)
@@ -31,6 +34,7 @@ func Compress(in []byte) []byte {
 	return buf.Bytes()
 }
 
+//Decompress binary using compress/flate library
 func Decompress(in []byte) []byte {
 	buf := new(bytes.Buffer)
 	decompressor := flate.NewReader(bytes.NewReader(in))

@@ -20,3 +20,11 @@ _cgo_export.*
 _testmain.go
 
 *.exe
+
+# App dependencies
+vendor/*/
+dist/
+reports/
+
+# Docker
+docker-compose.override.yml

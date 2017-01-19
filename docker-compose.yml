@@ -1,0 +1,7 @@
+version: '2'
+services:
+  go-saml:
+    image: filtered/go-dev:latest
+    volumes:
+      - .:/go/src/github.com/bmanth60/go-saml
+    working_dir: /go/src/github.com/bmanth60/go-saml

@@ -158,9 +158,9 @@ if err != nil {
   return
 }
 
-if authnRequest.Issuer.Url != issuerURL {
+if authnRequest.Issuer.URL != issuerURL {
   w.WriteHeader(500)
-  w.Write([]byte("unauthorized issuer "+authnRequest.Issuer.Url))
+  w.Write([]byte("unauthorized issuer "+authnRequest.Issuer.URL))
   return
 }
 
@@ -171,8 +171,8 @@ if authnRequest.Issuer.Url != issuerURL {
 ```go
 issuer := "http://localhost:8000/saml"
 authnResponse := saml.NewSignedResponse()
-authnResponse.Issuer.Url = issuer
-authnResponse.Assertion.Issuer.Url = issuer
+authnResponse.Issuer.URL = issuer
+authnResponse.Assertion.Issuer.URL = issuer
 authnResponse.Signature.KeyInfo.X509Data.X509Certificate.Cert = stringValueOfCert
 authnResponse.Assertion.Subject.NameID.Value = userIdThatYouAuthenticated
 authnResponse.AddAttribute("uid", userIdThatYouAuthenticated)
