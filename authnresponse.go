@@ -75,7 +75,7 @@ func (r *Response) Validate(s *ServiceProviderSettings) error {
 		return errors.New("subject recipient mismatch, expected: " + s.AssertionConsumerServiceURL + " not " + r.Assertion.Subject.SubjectConfirmation.SubjectConfirmationData.Recipient)
 	}
 
-	err := Verify(r.originalString, s.IDPPublicCertPath)
+	xmlRef, err := Verify(r.originalString, s.IDPPublicCertPath)
 	if err != nil {
 		return err
 	}
@@ -88,6 +88,12 @@ func (r *Response) Validate(s *ServiceProviderSettings) error {
 	}
 	if notOnOrAfter.Before(time.Now()) {
 		return errors.New("assertion has expired on: " + expires)
+	}
+
+	r.Assertion = Assertion{}
+	err = xml.Unmarshal([]byte(xmlRef[0]), &r.Assertion)
+	if e != nil {
+		return e
 	}
 
 	return nil
